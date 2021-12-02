@@ -2,29 +2,17 @@ cabal-version:      2.4
 name:               haskell-template
 version:            0.1.0.0
 license:            MIT
-copyright:          2021 Sridhar Ratnakumar
-maintainer:         srid@srid.ca
-author:             Sridhar Ratnakumar
+copyright:          Bhavit Sharma
+maintainer:         bhavit.sharma804@gmail.com
+author:             Bhavit Sharma
 category:           Web
 
--- TODO: Before hackage release.
--- A short (one-line) description of the package.
--- synopsis:
-
--- A longer description of the package.
--- description:
-
--- A URL where users can report bugs.
--- bug-reports:
-
 extra-source-files:
-  LICENSE
   README.md
 
 executable haskell-template
   build-depends:
     , aeson
-    , async
     , base
     , bytestring
     , containers
@@ -44,11 +32,6 @@ executable haskell-template
     , time
     , unliftio
     , with-utf8
-
-  mixins:
-    base hiding (Prelude),
-    relude (Relude as Prelude, Relude.Container.One),
-    relude
 
   ghc-options:
     -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns
