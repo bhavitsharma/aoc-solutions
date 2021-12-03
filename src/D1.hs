@@ -27,5 +27,3 @@ slidingWindow m xs = scanl (+) start (slide rollingSum m xs)
 
 solve2 :: [Int] -> Int
 solve2 = solve . slidingWindow 3
-
--- alternately, main = print . map readInt . words =<< readFile "test.txt"
