@@ -32,6 +32,7 @@ executable haskell-template
     , time
     , unliftio
     , with-utf8
+    , parsec
 
   ghc-options:
     -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns
