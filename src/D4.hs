@@ -30,14 +30,14 @@ main :: IO ()
 main = do
   contents <- readFile "src/input-4.txt"
   let (Right (moves, grids)) = parse parser "" contents
-  print (solve moves grids recurseGame)
-  print (solve moves grids r2)
+  print (solve moves grids r2 last)
+  print (solve moves grids r2 head)
 
-solve moves grids recurseFn = (winnerBoard, calledNum, unmarkedSum * calledNum)
+solve moves grids recurseFn listFetcher = (winnerBoard, calledNum, unmarkedSum * calledNum)
   where
     unmarkedSum = sum f
     f = filter (/= -1) (concat winnerBoard)
-    (winnerBoard, calledNum) = recurseFn moves grids
+    (winnerBoard, calledNum) = recurseFn moves grids listFetcher
 
 newBoard :: Int -> Board -> Board
 newBoard n = map (map (\v -> if v == n then (-1) else v))
@@ -47,17 +47,8 @@ isWon b = won b || won (transpose b)
   where
     won = any (all (== -1))
 
-recurseGame :: [Int] -> [Board] -> (Board, Int)
-recurseGame [] _ = error "Something went wrong"
-recurseGame (x : xs) b = case wonBoard of
-  Just board -> (board, x)
-  Nothing -> recurseGame xs transformed
-  where
-    transformed = map (newBoard x) b
-    wonBoard = find isWon transformed
-
-r2 :: [Int] -> [Board] -> (Board, Int)
-r2 [] _ = error "Something went wrong"
-r2 (x : xs) b = if isWon (head transformed) then (head transformed, x) else r2 xs transformed
+r2 :: [Int] -> [Board] -> ([Board] -> Board) -> (Board, Int)
+r2 [] _ _ = error "Something went wrong"
+r2 (x : xs) b f = if isWon (f transformed) then (f transformed, x) else r2 xs transformed f
   where
     transformed = sortOn isWon (map (newBoard x) b)
