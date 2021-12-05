@@ -33,6 +33,7 @@ executable haskell-template
     , unliftio
     , with-utf8
     , parsec
+    , transformers
 
   ghc-options:
     -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns
