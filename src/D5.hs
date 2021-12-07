@@ -3,6 +3,7 @@ import Text.Parsec
 
 type Segment = (Int, Int, Int, Int)
 
+main :: IO ()
 main = do
   txt <- readFile "src/input-5.txt"
   let (Right segments) = parse parser "" txt
@@ -30,13 +31,13 @@ parser :: Parsec String () [Segment]
 parser =
   ( do
       x1 <- number
-      char ','
+      _ <- char ','
       y1 <- number
 
-      string " -> "
+      _ <- string " -> "
 
       x2 <- number
-      char ','
+      _ <- char ','
       y2 <- number
 
       return (x1, y1, x2, y2)
