@@ -5,14 +5,16 @@ import qualified Data.Map as M
 
 type Graph = M.Map String [String]
 
+type VisMap = M.Map String Int
+
 isSmall :: String -> Bool
 isSmall = all isLower
 
 -- for part1, replace condition with just `cnt == 0`
-canVisit :: String -> M.Map String Int -> Bool
+canVisit :: String -> VisMap -> Bool
 canVisit s m
   | cnt == 0 = True
-  | cnt == 1 = 2 `notElem` M.elems m && s /= "start"
+  | cnt == 1 = 2 `notElem` M.elems m && s /= "start" -- remove this for the part1.
   | otherwise = False
   where
     cnt = M.findWithDefault 0 s m
@@ -20,7 +22,7 @@ canVisit s m
 -- constraints are small enough to just brute force instead of dp.
 -- Although implementing DP with haskell is so freakin hard.
 -- verified that answer can never be infinite because every "large" node is connected to one small.
-dfs :: String -> M.Map String Int -> Graph -> Int
+dfs :: String -> VisMap -> Graph -> Int
 dfs st visited g
   | st == "end" = 1
   | not (canVisit st visited) = 0
