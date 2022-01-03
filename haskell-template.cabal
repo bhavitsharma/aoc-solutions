@@ -35,6 +35,8 @@ executable haskell-template
     , parsec
     , transformers
     , vector
+    , containers
+    , heap
 
   ghc-options:
     -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns
