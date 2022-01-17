@@ -7,3 +7,5 @@
 - TODO: How to have nice 2d/3d arrays with good mapping abilities and indices? I think `repa` library is good for this.
 - Why the fuck writing a DFS is so hard in haskell?
 - Maybe it's time to learn Monads.
+- YAY, Learnt State Monad and solved dynamic programming using haskell. P21.
+- State Monads are so beautiful.

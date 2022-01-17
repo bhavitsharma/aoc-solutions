@@ -33,6 +33,7 @@
                 ghcid
                 haskell-language-server
                 ormolu
+                zlib
                 pkgs.nixpkgs-fmt
               ]);
           };
