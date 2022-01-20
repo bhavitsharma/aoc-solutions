@@ -38,6 +38,7 @@ executable haskell-template
     , containers
     , heap
     , vector-algorithms
+    , split
 
   ghc-options:
     -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns
