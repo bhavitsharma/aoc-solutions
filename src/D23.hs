@@ -1,14 +1,11 @@
 import Control.Lens (set, view, _1, _2, _3)
-import Control.Monad (guard, mapM)
+import Control.Monad (guard)
 import qualified Control.Monad.State.Strict as S
-import Data.Array (accumArray, array)
+import Data.Array (array)
 import Data.Array.Base ((!))
-import Data.Char (ord)
 import qualified Data.Heap as H
 import qualified Data.Map.Strict as M
-import qualified Data.Map.Strict as S
 import Data.Maybe (fromJust, isJust)
-import qualified Data.Set as St
 
 type Edge = (Int, Integer) -- to, weight
 
@@ -31,9 +28,6 @@ unchanged = array (0, 3) [(0, 2), (1, 4), (2, 6), (3, 8)]
 
 powers = array (0, 3) [(0, 1), (1, 10), (2, 100), (3, 1000)]
 
-charPos :: Char -> Int
-charPos c = ord c - ord 'A'
-
 leftPos u m = case M.lookupLT u m of
   Nothing -> 0
   Just (x, _) -> x + 1
@@ -48,7 +42,7 @@ removeTop v index = x ++ [h] ++ y
     x = take index v
     y = drop (index + 1) v
 
--- The `moveHall` and `moveBin` are really really ugly. Try to refactor when you have time.
+-- TODO(bhavit): The `moveHall` and `moveBin` are really really ugly. Try to refactor when you have time.
 moveBin (m, v) index
   | null v' = []
   | otherwise = map (\(i, cost) -> ((M.insert i char m, newL), cost)) position
@@ -60,7 +54,7 @@ moveBin (m, v) index
     pow = powers ! char
     left = leftPos u m
     right = rightPos u m
-    position = [(i, (idx + 1 + abs (i - u)) * pow) | i <- [left .. right], i /= 2 && i /= 4 && i /= 6 && i /= 8]
+    position = [(i, (idx + 1 + abs (i - u)) * pow) | i <- [left .. right], i `notElem` [2, 4, 6, 8]]
 
 moveHall (m, pos) index = [fromJust x | x <- [a, b], isJust x]
   where
@@ -68,21 +62,18 @@ moveHall (m, pos) index = [fromJust x | x <- [a, b], isJust x]
     v' = pos !! index
     (position, _) = head v'
     newPos@(idx, _) = if null v' then (3, index) else (position - 1, index)
-    allSame = all (\(_, y) -> y == index) v'
+    allSame = all ((==) index . snd) v'
     l = take index pos
     r = drop (index + 1) pos
     newL = l ++ [newPos : v'] ++ r
     pow = powers ! index
-    a = do
-      (k, v) <- M.lookupLT u m
+    newState f = do
+      (k, v) <- f u m
       guard (v == index && allSame)
       let c1 = pow * (idx + 1 + abs (k - u))
       return ((M.delete k m, newL), c1)
-    b = do
-      (k, v) <- M.lookupGT u m
-      guard (v == index && allSame)
-      let c2 = pow * (idx + 1 + abs (k - u))
-      return ((M.delete k m, newL), c2)
+    a = newState M.lookupLT
+    b = newState M.lookupGT
 
 newStates :: State -> [(State, Int)]
 newStates s = s1 ++ s2
@@ -140,13 +131,7 @@ runDijkstra' start = M.lookup endIndex dVector
     graph = S.execState (createGraph (M.empty, start)) M.empty
     newMap = M.map (fmap (\(vertex, c) -> (M.findIndex vertex graph, toInteger c))) . M.mapKeys (`M.findIndex` graph) $ graph
     startIndex = M.findIndex (M.empty, start) graph
-    end =
-      [ [(0, 0), (1, 0), (2, 0), (3, 0)],
-        [(0, 1), (1, 1), (2, 1), (3, 1)],
-        [(0, 2), (1, 2), (2, 2), (3, 2)],
-        [(0, 3), (1, 3), (2, 3), (3, 3)]
-      ] ::
-        [[Position]]
+    end = [[(j, i) | j <- [0 .. 3]] | i <- [0 .. 3]]
     endIndex = M.findIndex (M.empty, end) graph
     dVector = runDijkstra startIndex totalNodes newMap
 

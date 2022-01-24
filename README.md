@@ -12,3 +12,5 @@
 - Maybe it's time to learn Monads.
 - YAY, Learnt State Monad and solved dynamic programming using haskell. P21.
 - State Monads are so beautiful.
+- One of the pain points while using lists/arrays is that I don't an efficient or a trivial way to do them.
+- Moreover, traversing 2d arrays and stuff were too easy in C++. In Haskell, it's just a pain. Maybe $ Missing Something obvious.
