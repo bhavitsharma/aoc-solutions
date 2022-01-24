@@ -101,6 +101,7 @@ loopUntilTrue index (x : xs) ns = do
     else do
       loopUntilTrue index xs ns
 
+-- Literally brute force, maybe I am stupid but can't find any other solution?
 getAllStates :: [[Op]] -> S.State VisState Bool
 getAllStates [] = do
   (index, m, _, _) <- S.get
