@@ -1,5 +1,8 @@
 # AOC Solutions (and commentary)
 
+**NOTE: I didn't create special functions to solve part1, part2 separetely. All the soln's will work for part 2**
+**To solve part 1, you'll have to make few modifications**
+
 - I am learning haskell right now so expect that my solutions are ugly, overly verbose and non functionally written.
 - If you have ideas on how to improve, please raise a PR. I will really appreciate it.
 - Haskell Template shamelesly copied from [srid-template](https://github.com/srid/haskell-template)

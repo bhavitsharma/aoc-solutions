@@ -48,6 +48,7 @@ removeTop v index = x ++ [h] ++ y
     x = take index v
     y = drop (index + 1) v
 
+-- The `moveHall` and `moveBin` are really really ugly. Try to refactor when you have time.
 moveBin (m, v) index
   | null v' = []
   | otherwise = map (\(i, cost) -> ((M.insert i char m, newL), cost)) position
